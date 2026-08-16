@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CCPL Precision Engineering | Sub-Micron Metal Machining & Foundry Solutions</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>CCPL Precision Engineering | Tier-1 OEM Machining & Manufacturing</title>
+    
+    <!-- Three.js CDN for 3D Engine Rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -21,22 +19,16 @@
                         brand: {
                             50: '#f0f9ff',
                             100: '#e0f2fe',
-                            400: '#38bdf8',
                             500: '#0ea5e9',
                             600: '#0284c7',
-                            800: '#075985',
+                            700: '#0369a1',
                             900: '#0c4a6e',
-                            950: '#082f49',
+                            950: '#082f49'
                         },
-                        navy: {
-                            800: '#0f172a',
-                            900: '#090d16',
-                            950: '#04070d'
+                        accent: {
+                            500: '#f59e0b',
+                            600: '#d97706'
                         }
-                    },
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        heading: ['Outfit', 'sans-serif']
                     }
                 }
             }
@@ -44,1045 +36,864 @@
     </script>
     <style>
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #090d16;
-            color: #f1f5f9;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
-        h1, h2, h3, h4, .font-heading {
-            font-family: 'Outfit', sans-serif;
+        .light-mode {
+            background-color: #f8fafc;
+            color: #0f172a;
         }
-        .bg-radial-gradient {
-            background: radial-gradient(circle at 75% 15%, rgba(14, 165, 233, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 20% 80%, rgba(30, 41, 59, 0.5) 0%, transparent 60%);
+        .dark-mode {
+            background-color: #030712;
+            color: #cbd5e1;
         }
-        .glass-card {
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        canvas {
+            touch-action: none;
+            cursor: grab;
         }
-        .glass-card-hover {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .glass-card-hover:hover {
-            border-color: rgba(56, 189, 248, 0.4);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px -10px rgba(14, 165, 233, 0.2);
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #090d16;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #0284c7;
-        }
-        .tab-active {
-            background-color: #0284c7 !important;
-            color: #ffffff !important;
-            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+        canvas:active {
+            cursor: grabbing;
         }
     </style>
 </head>
-<body class="bg-navy-900 text-slate-200 antialiased min-h-screen flex flex-col relative overflow-x-hidden bg-radial-gradient">
+<body class="light-mode bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-200 antialiased selection:bg-brand-500 selection:text-white">
 
-    <!-- Sticky Header with Dual-View Selector -->
-    <header class="sticky top-0 z-50 bg-navy-900/90 backdrop-blur-md border-b border-slate-800/80 transition-all">
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-white/90 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <!-- Brand Logo -->
-            <a href="#" onclick="switchMainView('company')" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-brand-400 flex items-center justify-center text-white font-heading font-extrabold text-lg shadow-lg shadow-brand-500/20 group-hover:scale-105 transition-transform">
-                    CCPL
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-600 to-brand-900 flex items-center justify-center text-white font-black text-xl shadow-md">
+                    CC
                 </div>
                 <div>
-                    <span class="font-heading font-bold text-lg text-white tracking-tight block leading-tight">CCPL Precision Engineering</span>
-                    <span class="text-xs text-brand-400 font-medium tracking-wider uppercase block">ISO 9001:2015 Certified Plant</span>
+                    <span class="text-xl font-black tracking-tight text-slate-900 dark:text-white">CCPL <span class="text-brand-600 font-semibold">PRECISION</span></span>
+                    <span class="block text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400 font-medium">Tier-1 OEM Machining & Foundry</span>
                 </div>
-            </a>
-
-            <!-- View Switcher Tabs (Company Portfolio vs Founder Profile) -->
-            <div class="hidden lg:flex items-center bg-slate-900/90 p-1.5 rounded-xl border border-slate-800 text-xs font-semibold">
-                <button id="nav-btn-company" onclick="switchMainView('company')" class="px-5 py-2 rounded-lg transition-all flex items-center gap-2 tab-active">
-                    <i class="fa-solid fa-building flex text-brand-400"></i> Company Portfolio
-                </button>
-                <button id="nav-btn-founder" onclick="switchMainView('founder')" class="px-5 py-2 rounded-lg transition-all text-slate-400 hover:text-white flex items-center gap-2">
-                    <i class="fa-solid fa-user-gear text-slate-400"></i> Founder & MD Profile
-                </button>
             </div>
 
-            <!-- Dynamic Context Navigation (Company View Nav Links) -->
-            <nav id="company-nav" class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
-                <a href="#company-overview" class="hover:text-brand-400 transition-colors">Overview</a>
-                <a href="#ecosystem" class="hover:text-brand-400 transition-colors">Ecosystem</a>
-                <a href="#fleet" class="hover:text-brand-400 transition-colors">Machinery Fleet</a>
-                <a href="#solutions" class="hover:text-brand-400 transition-colors">OEM Solutions</a>
-                <a href="#calculator" class="hover:text-brand-400 transition-colors">NPD Estimator</a>
+            <nav class="hidden md:flex items-center space-x-8 font-medium text-sm">
+                <a href="#capabilities" class="text-slate-700 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Capabilities</a>
+                <a href="#inspector" class="text-slate-700 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">3D Inspector</a>
+                <a href="#foundry" class="text-slate-700 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Sister Foundry</a>
+                <a href="#leadership" class="text-slate-700 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Leadership</a>
+                <a href="#rfq" class="text-slate-700 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Instant RFQ</a>
+                <a href="#quality" class="text-slate-700 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Metrology QC</a>
             </nav>
 
-            <!-- Dynamic Context Navigation (Founder View Nav Links - Initially Hidden) -->
-            <nav id="founder-nav" class="hidden md:hidden items-center gap-6 text-sm font-medium text-slate-300">
-                <a href="#founder-bio" class="hover:text-brand-400 transition-colors">Executive Bio</a>
-                <a href="#boeing-pedigree" class="hover:text-brand-400 transition-colors">Boeing Heritage</a>
-                <a href="#education" class="hover:text-brand-400 transition-colors">ASU Master's</a>
-                <a href="#leadership-vision" class="hover:text-brand-400 transition-colors">Vision</a>
-            </nav>
-
-            <!-- Call to Actions -->
-            <div class="hidden md:flex items-center gap-3">
-                <button onclick="copyContactInfo()" class="px-3.5 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-copy text-brand-400"></i>
-                    <span id="copyBtnText">Copy Contact</span>
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleColorTheme()" id="theme-toggle-btn" class="px-3 py-2 text-xs font-semibold rounded-lg border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center space-x-2 text-slate-800 dark:text-slate-200">
+                    <span id="theme-btn-text">🌙 Toggle Dark/Light</span>
                 </button>
-                <a href="#contact" class="px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-500 hover:to-brand-400 text-white shadow-md shadow-brand-500/20 transition-all">
-                    RFQ / Inquiry
+                <a href="#rfq" class="hidden sm:inline-flex items-center px-4 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-medium text-sm shadow-sm transition-all shadow-brand-600/20">
+                    Request Quote
                 </a>
-            </div>
-
-            <!-- Mobile Menu Toggle -->
-            <button id="mobileMenuBtn" class="md:hidden p-2 text-slate-400 hover:text-white text-xl">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-        </div>
-
-        <!-- Mobile Drawer -->
-        <div id="mobileMenu" class="hidden md:hidden bg-navy-800 border-b border-slate-700 px-6 py-6 space-y-4">
-            <div class="grid grid-cols-2 gap-2 bg-slate-900 p-1 rounded-lg text-xs font-bold text-center mb-4">
-                <button id="mob-btn-company" onclick="switchMainView('company'); toggleMobileMenu()" class="py-2.5 rounded text-white bg-brand-600">Company Portfolio</button>
-                <button id="mob-btn-founder" onclick="switchMainView('founder'); toggleMobileMenu()" class="py-2.5 rounded text-slate-400">Founder Profile</button>
-            </div>
-            
-            <div id="mob-company-links" class="space-y-3">
-                <a href="#company-overview" class="mobile-link block text-slate-300 hover:text-brand-400 font-medium">Company Overview</a>
-                <a href="#ecosystem" class="mobile-link block text-slate-300 hover:text-brand-400 font-medium">Cast-to-Machine Ecosystem</a>
-                <a href="#fleet" class="mobile-link block text-slate-300 hover:text-brand-400 font-medium">Machinery Fleet</a>
-                <a href="#solutions" class="mobile-link block text-slate-300 hover:text-brand-400 font-medium">OEM Component Solutions</a>
-                <a href="#calculator" class="mobile-link block text-slate-300 hover:text-brand-400 font-medium">NPD Estimator</a>
-            </div>
-
-            <div id="mob-founder-links" class="hidden space-y-3">
-                <a href="#founder-bio" class="mobile-link block text-slate-300 hover:text-brand-400 font-medium">Executive Biography</a>
-                <a href="#boeing-pedigree" class="mobile-link block text-slate-300 hover:text-brand-400 font-medium">Boeing Aerospace Pedigree</a>
-                <a href="#education" class="mobile-link block text-slate-300 hover:text-brand-400 font-medium">M.S. Mechanical (ASU)</a>
-                <a href="#leadership-vision" class="mobile-link block text-slate-300 hover:text-brand-400 font-medium">Make-in-India Vision</a>
-            </div>
-
-            <div class="pt-4 border-t border-slate-700 flex flex-col gap-3">
-                <button onclick="copyContactInfo()" class="w-full py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider bg-slate-800 text-slate-200 border border-slate-700 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-copy text-brand-400"></i> Copy Contact Details
-                </button>
-                <a href="#contact" onclick="toggleMobileMenu()" class="w-full text-center py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-brand-600 text-white">Submit RFQ Inquiry</a>
             </div>
         </div>
     </header>
 
-    <main class="flex-grow">
-        
-        <!-- ========================================================================= -->
-        <!-- VIEW 1: COMPANY PORTFOLIO (PRIMARY)                                       -->
-        <!-- ========================================================================= -->
-        <div id="company-view" class="view-section">
-
-            <!-- Company Hero Section -->
-            <section id="company-overview" class="pt-12 pb-16 md:pt-20 md:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid lg:grid-cols-12 gap-12 items-center">
-                    
-                    <div class="lg:col-span-7 space-y-6">
-                        <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-400/30 text-brand-400 text-xs font-semibold tracking-wider uppercase">
-                            <i class="fa-solid fa-gears"></i> ISO 9001:2015 Precision Machining & Casting Facility
-                        </div>
-                        
-                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight">
-                            Sub-Micron Machining & <span class="bg-gradient-to-r from-brand-400 via-sky-300 to-cyan-400 bg-clip-text text-transparent">Cast-to-Machine OEM Solutions.</span>
-                        </h1>
-
-                        <p class="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
-                            <strong class="text-white">CCPL Precision Engineering</strong> is a premier manufacturing partner specializing in high-precision turned, milled, and laser-cut metal components. Combining sub-micron Mitutoyo metrology with an integrated ferrous foundry ecosystem, we deliver zero-defect indigenized solutions for Tier-1 automotive and industrial OEMs.
-                        </p>
-
-                        <!-- Key Enterprise Indicators -->
-                        <div class="flex flex-wrap gap-3 pt-2">
-                            <div class="glass-card px-3.5 py-2 rounded-lg text-xs font-medium text-slate-300 flex items-center gap-2 border border-slate-700/80">
-                                <i class="fa-solid fa-certificate text-brand-400"></i> ISO 9001:2015 Certified
-                            </div>
-                            <div class="glass-card px-3.5 py-2 rounded-lg text-xs font-medium text-slate-300 flex items-center gap-2 border border-slate-700/80">
-                                <i class="fa-solid fa-industry text-cyan-400"></i> 20% Dedicated Reserve Buffer
-                            </div>
-                            <div class="glass-card px-3.5 py-2 rounded-lg text-xs font-medium text-slate-300 flex items-center gap-2 border border-slate-700/80">
-                                <i class="fa-solid fa-location-dot text-brand-400"></i> Plant: Faridabad, Haryana, India
-                            </div>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="pt-4 flex flex-wrap items-center gap-4">
-                            <a href="#fleet" class="px-6 py-3 rounded-xl bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-500 hover:to-brand-400 text-white font-semibold text-sm shadow-lg shadow-brand-500/25 transition-all flex items-center gap-2 group">
-                                View Plant Fleet <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                            </a>
-                            <button onclick="switchMainView('founder')" class="px-6 py-3 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 text-slate-200 font-semibold text-sm border border-slate-700 transition-all flex items-center gap-2">
-                                <i class="fa-solid fa-user-gear text-brand-400"></i> Meet Founder & Leadership
-                            </button>
-                        </div>
+    <section class="relative overflow-hidden py-16 lg:py-24 border-b border-slate-200 dark:border-slate-800 bg-gradient-to-b from-white to-slate-100 dark:from-slate-900 dark:to-slate-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-brand-100 dark:bg-brand-950/80 border border-brand-300 dark:border-brand-800 text-brand-700 dark:text-brand-300 text-xs font-semibold tracking-wide uppercase">
+                        <span class="w-2 h-2 rounded-full bg-brand-600 animate-pulse"></span>
+                        <span>ISO 9001:2015 Certified Tier-1 Manufacturer • Faridabad, India</span>
                     </div>
-
-                    <!-- Company Hero Card / Live Operational Dashboard -->
-                    <div class="lg:col-span-5">
-                        <div class="relative mx-auto max-w-md lg:max-w-none">
-                            <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-brand-500 to-cyan-500 opacity-20 blur-xl"></div>
-                            
-                            <div class="relative glass-card p-8 rounded-3xl border border-slate-700/80 space-y-6">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-400/30 flex items-center justify-center text-brand-400 font-heading font-extrabold text-xl">
-                                            CCPL
-                                        </div>
-                                        <div>
-                                            <h3 class="font-heading font-bold text-lg text-white">Operational Dashboard</h3>
-                                            <p class="text-xs text-slate-400">Plant Status: Active Production</p>
-                                        </div>
-                                    </div>
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
-                                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> ISO Verified
-                                    </span>
-                                </div>
-
-                                <hr class="border-slate-800">
-
-                                <!-- Quick Metrics Grid -->
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
-                                        <div class="text-2xl font-bold font-heading text-brand-400">Sub-Micron</div>
-                                        <div class="text-xs text-slate-400">Mitutoyo Lab Accuracy</div>
-                                    </div>
-                                    <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
-                                        <div class="text-2xl font-bold font-heading text-emerald-400">100%</div>
-                                        <div class="text-xs text-slate-400">Material Lot Traceability</div>
-                                    </div>
-                                    <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
-                                        <div class="text-2xl font-bold font-heading text-cyan-400">20% Buffer</div>
-                                        <div class="text-xs text-slate-400">OEM Surge Protection</div>
-                                    </div>
-                                    <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
-                                        <div class="text-2xl font-bold font-heading text-amber-400">Cast+Machine</div>
-                                        <div class="text-xs text-slate-400">Integrated Sand Foundry</div>
-                                    </div>
-                                </div>
-
-                                <div class="p-4 rounded-xl bg-brand-950/40 border border-brand-800/40 text-xs text-slate-300 flex items-start gap-3">
-                                    <i class="fa-solid fa-shield-halved text-brand-400 text-base mt-0.5"></i>
-                                    <div>
-                                        <strong class="text-white block font-medium">OEM Approved Vendor Partner</strong>
-                                        <p class="text-slate-400 text-xs mt-0.5">Supplying precision turned components & indigenized sub-assemblies to major automotive OEM supply chains including Uno Minda and Wanfeng.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </section>
-
-            <!-- Section 2: Enterprise Ecosystem (CCPL Machining + A.ES Foundry) -->
-            <section id="ecosystem" class="py-16 bg-navy-950/60 border-y border-slate-800/80">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    
-                    <div class="text-center max-w-3xl mx-auto mb-12">
-                        <span class="text-xs font-semibold tracking-widest text-brand-400 uppercase">Single-Source Delivery</span>
-                        <h2 class="text-3xl sm:text-4xl font-bold text-white mt-1">Cast-to-Machine Infrastructure</h2>
-                        <p class="text-slate-400 mt-3 text-sm sm:text-base">
-                            Eliminating supply chain delays through our fully integrated machining plant and sister foundry entity.
-                        </p>
-                    </div>
-
-                    <div class="grid lg:grid-cols-2 gap-8">
-                        
-                        <!-- Primary Unit: CCPL Precision Engineering -->
-                        <div class="glass-card p-8 rounded-2xl glass-card-hover relative overflow-hidden border border-slate-700/80">
-                            <div class="absolute top-0 right-0 px-4 py-1.5 bg-brand-600 text-white text-xs font-bold rounded-bl-xl uppercase tracking-wider">
-                                Precision Machining Hub
-                            </div>
-
-                            <div class="flex items-center gap-4 mb-6">
-                                <div class="w-14 h-14 rounded-2xl bg-brand-500/10 border border-brand-400/30 flex items-center justify-center text-brand-400 text-2xl">
-                                    <i class="fa-solid fa-microchip"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-2xl font-bold text-white font-heading">CCPL Precision Engineering</h3>
-                                    <p class="text-xs text-brand-400 uppercase font-semibold tracking-wider">Faridabad, Haryana · ISO 9001:2015</p>
-                                </div>
-                            </div>
-
-                            <p class="text-slate-300 text-sm leading-relaxed mb-6">
-                                Specialized CNC machining facility equipped with CNC turned centers, VMC 4-axis milling, and high-speed 3kW fiber laser cutting. Operating with a dedicated 20% reserve capacity buffer to absorb production spikes and rapid prototype releases.
-                            </p>
-
-                            <div class="grid sm:grid-cols-2 gap-3 mb-6">
-                                <div class="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
-                                    <span class="block text-xs text-slate-400">CNC Turning Fleet</span>
-                                    <span class="font-bold text-slate-200 text-sm">Jyoti DX & ACE Centers</span>
-                                </div>
-                                <div class="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
-                                    <span class="block text-xs text-slate-400">VMC & Laser</span>
-                                    <span class="font-bold text-slate-200 text-sm">BFW 544 & 3kW Fiber Laser</span>
-                                </div>
-                            </div>
-
-                            <div class="flex flex-wrap gap-2 text-xs">
-                                <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300"><i class="fa-solid fa-check text-emerald-400 mr-1"></i> Uno Minda Tier-1 Supplier</span>
-                                <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300"><i class="fa-solid fa-check text-emerald-400 mr-1"></i> Wanfeng Partner</span>
-                                <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300"><i class="fa-solid fa-check text-emerald-400 mr-1"></i> Sub-Micron Metrology</span>
-                            </div>
-                        </div>
-
-                        <!-- Sister Entity: A.ES Engineers -->
-                        <div class="glass-card p-8 rounded-2xl glass-card-hover relative overflow-hidden border border-slate-700/80">
-                            <div class="absolute top-0 right-0 px-4 py-1.5 bg-cyan-700 text-white text-xs font-bold rounded-bl-xl uppercase tracking-wider">
-                                Foundry Casting Unit
-                            </div>
-
-                            <div class="flex items-center gap-4 mb-6">
-                                <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-400/30 flex items-center justify-center text-cyan-400 text-2xl">
-                                    <i class="fa-solid fa-fire-burner"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-2xl font-bold text-white font-heading">A.ES Engineers</h3>
-                                    <p class="text-xs text-cyan-400 uppercase font-semibold tracking-wider">Sister Entity · High-Grade Sand Foundry</p>
-                                </div>
-                            </div>
-
-                            <p class="text-slate-300 text-sm leading-relaxed mb-6">
-                                High-capacity ferrous foundry featuring automated DISA molding lines and ARPA 300 sand casting setups. Supplies raw ductile SG iron and grey iron castings directly to CCPL's machining lines for zero-transit-lag production.
-                            </p>
-
-                            <div class="grid sm:grid-cols-2 gap-3 mb-6">
-                                <div class="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
-                                    <span class="block text-xs text-slate-400">Molding Technology</span>
-                                    <span class="font-bold text-slate-200 text-sm">DISA & ARPA 300 Sand Lines</span>
-                                </div>
-                                <div class="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
-                                    <span class="block text-xs text-slate-400">Metal Specifications</span>
-                                    <span class="font-bold text-slate-200 text-sm">Ductile SG & Grey Iron</span>
-                                </div>
-                            </div>
-
-                            <div class="flex flex-wrap gap-2 text-xs">
-                                <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300"><i class="fa-solid fa-gear text-cyan-400 mr-1"></i> Pump Sumps</span>
-                                <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300"><i class="fa-solid fa-gear text-cyan-400 mr-1"></i> Heavy Crane Pulleys</span>
-                                <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300"><i class="fa-solid fa-gear text-cyan-400 mr-1"></i> Bearing Housings</span>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </section>
-
-            <!-- Section 3: Machinery Fleet & Quality Control Facilities -->
-            <section id="fleet" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-3xl mx-auto mb-12">
-                    <span class="text-xs font-semibold tracking-widest text-brand-400 uppercase">Production Machinery</span>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-white mt-1">Shop Floor Equipment & Quality Lab</h2>
-                    <p class="text-slate-400 mt-3 text-sm sm:text-base">
-                        State-of-the-art multi-axis CNC turning, VMC milling, fiber laser processing, and Mitutoyo sub-micron metrology.
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1]">
+                        Precision Engineering <br><span class="text-brand-600 dark:text-brand-400">Without Compromise</span>
+                    </h1>
+                    <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+                        Supplying high-tolerance CNC turned parts, machined SG iron castings, and aerospace-rigor assemblies to leading global Tier-1 OEMs including Uno Minda and Wanfeng with a <strong>20% dedicated reserve capacity buffer</strong> for rapid production ramps.
                     </p>
-                </div>
-
-                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    
-                    <!-- Fleet Card 1 -->
-                    <div class="glass-card p-6 rounded-xl border border-slate-700/80 glass-card-hover space-y-4">
-                        <div class="w-12 h-12 rounded-lg bg-brand-500/10 text-brand-400 flex items-center justify-center text-xl font-bold">
-                            <i class="fa-solid fa-arrows-spin"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white font-heading">CNC Turning Fleet</h3>
-                        <p class="text-xs text-slate-300 leading-relaxed">
-                            High-precision Jyoti DX and ACE CNC turning centers optimized for close-tolerance cylindrical turning, threading, and groove profile operations.
-                        </p>
-                        <div class="pt-2 border-t border-slate-800 text-xs text-brand-400 font-semibold">
-                            Specs: EN8 / EN9 / Stainless Turning
-                        </div>
-                    </div>
-
-                    <!-- Fleet Card 2 -->
-                    <div class="glass-card p-6 rounded-xl border border-slate-700/80 glass-card-hover space-y-4">
-                        <div class="w-12 h-12 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl font-bold">
-                            <i class="fa-solid fa-cubes-stacked"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white font-heading">VMC Milling Machine</h3>
-                        <p class="text-xs text-slate-300 leading-relaxed">
-                            BFW 544 Vertical Machining Center for complex multi-axis prismatic parts, precision drilling, face milling, and intricate cavity pocketing.
-                        </p>
-                        <div class="pt-2 border-t border-slate-800 text-xs text-cyan-400 font-semibold">
-                            Specs: High-Speed Spindle & Rigidity
-                        </div>
-                    </div>
-
-                    <!-- Fleet Card 3 -->
-                    <div class="glass-card p-6 rounded-xl border border-slate-700/80 glass-card-hover space-y-4">
-                        <div class="w-12 h-12 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl font-bold">
-                            <i class="fa-solid fa-bolt-lightning"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white font-heading">3kW Fiber Laser</h3>
-                        <p class="text-xs text-slate-300 leading-relaxed">
-                            Industrial 3kW fiber laser cutting line for high-speed profile sheet metal blanking, custom flange patterns, and rapid component prototypes.
-                        </p>
-                        <div class="pt-2 border-t border-slate-800 text-xs text-amber-400 font-semibold">
-                            Specs: High Precision & Clean Edges
-                        </div>
-                    </div>
-
-                    <!-- Fleet Card 4 -->
-                    <div class="glass-card p-6 rounded-xl border border-slate-700/80 glass-card-hover space-y-4">
-                        <div class="w-12 h-12 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl font-bold">
-                            <i class="fa-solid fa-microscope"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white font-heading">Mitutoyo Metrology</h3>
-                        <p class="text-xs text-slate-300 leading-relaxed">
-                            Dedicated quality control lab with sub-micron digital height gauges, digital micrometers, bore gauges, and surface roughness testers.
-                        </p>
-                        <div class="pt-2 border-t border-slate-800 text-xs text-emerald-400 font-semibold">
-                            Specs: Sub-Micron Traceability
-                        </div>
-                    </div>
-
-                </div>
-            </section>
-
-            <!-- Section 4: Key OEM Solution Showcase -->
-            <section id="solutions" class="py-16 bg-navy-950/60 border-y border-slate-800/80">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center max-w-3xl mx-auto mb-12">
-                        <span class="text-xs font-semibold tracking-widest text-brand-400 uppercase">Product Lineup</span>
-                        <h2 class="text-3xl sm:text-4xl font-bold text-white mt-1">Engineered OEM Components</h2>
-                        <p class="text-slate-400 mt-3 text-sm sm:text-base">
-                            Sample precision parts indigenized for automotive, electric starter motors, and industrial machinery.
-                        </p>
-                    </div>
-
-                    <div class="grid md:grid-cols-3 gap-6">
-                        
-                        <!-- Product 1 -->
-                        <div class="glass-card p-6 rounded-2xl border border-slate-700/80 space-y-4 glass-card-hover">
-                            <div class="h-44 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center relative overflow-hidden group">
-                                <div class="text-slate-700 text-6xl group-hover:scale-110 transition-transform">
-                                    <i class="fa-solid fa-car-battery"></i>
-                                </div>
-                                <span class="absolute top-3 right-3 px-2.5 py-1 bg-brand-500/20 text-brand-400 text-xs font-semibold rounded-md border border-brand-400/30">Automotive OEM</span>
-                            </div>
-                            <h3 class="font-heading font-bold text-lg text-white">Starter Motor Pipe Casings</h3>
-                            <p class="text-xs text-slate-300 leading-relaxed">
-                                Precision cut, faced, and turned ERW pipe base casings manufactured for electrical motor starter assemblies with strict concentricity control.
-                            </p>
-                            <div class="flex items-center justify-between text-xs border-t border-slate-800 pt-3 text-slate-400">
-                                <span>Material: ERW Steel</span>
-                                <span class="text-brand-400 font-semibold">Tol: ±0.01mm</span>
-                            </div>
-                        </div>
-
-                        <!-- Product 2 -->
-                        <div class="glass-card p-6 rounded-2xl border border-slate-700/80 space-y-4 glass-card-hover">
-                            <div class="h-44 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center relative overflow-hidden group">
-                                <div class="text-slate-700 text-6xl group-hover:scale-110 transition-transform">
-                                    <i class="fa-solid fa-gear"></i>
-                                </div>
-                                <span class="absolute top-3 right-3 px-2.5 py-1 bg-cyan-500/20 text-cyan-400 text-xs font-semibold rounded-md border border-cyan-400/30">Suspension Tier-1</span>
-                            </div>
-                            <h3 class="font-heading font-bold text-lg text-white">EN8 Suspension Bushes & Levers</h3>
-                            <p class="text-xs text-slate-300 leading-relaxed">
-                                Heavy-duty turned and induction hardened EN8 forged bushes and control levers built to absorb high dynamic impact loads in commercial vehicles.
-                            </p>
-                            <div class="flex items-center justify-between text-xs border-t border-slate-800 pt-3 text-slate-400">
-                                <span>Material: EN8 Forging</span>
-                                <span class="text-cyan-400 font-semibold">Tol: Sub-Micron</span>
-                            </div>
-                        </div>
-
-                        <!-- Product 3 -->
-                        <div class="glass-card p-6 rounded-2xl border border-slate-700/80 space-y-4 glass-card-hover">
-                            <div class="h-44 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center relative overflow-hidden group">
-                                <div class="text-slate-700 text-6xl group-hover:scale-110 transition-transform">
-                                    <i class="fa-solid fa-oil-well"></i>
-                                </div>
-                                <span class="absolute top-3 right-3 px-2.5 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-md border border-emerald-400/30">Cast-to-Machine</span>
-                            </div>
-                            <h3 class="font-heading font-bold text-lg text-white">SG Iron Pump Sumps & Pulleys</h3>
-                            <p class="text-xs text-slate-300 leading-relaxed">
-                                Cast at A.ES Engineers sand foundry and finish-machined at CCPL. High structural density SG iron housings for industrial fluid handling systems.
-                            </p>
-                            <div class="flex items-center justify-between text-xs border-t border-slate-800 pt-3 text-slate-400">
-                                <span>Material: Ductile SG Iron</span>
-                                <span class="text-emerald-400 font-semibold">ISO 9001 Tested</span>
-                            </div>
-                        </div>
-
+                    <div class="flex flex-wrap gap-4 pt-4">
+                        <a href="#inspector" class="px-6 py-3.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold shadow-lg shadow-brand-600/25 transition-all flex items-center space-x-2">
+                            <span>Explore 3D Part Inspector</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                        <a href="#rfq" class="px-6 py-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+                            Instant Feasibility Calculator
+                        </a>
                     </div>
                 </div>
-            </section>
 
-            <!-- Section 5: Interactive NPD Feasibility Estimator -->
-            <section id="calculator" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="glass-card p-8 sm:p-12 rounded-3xl border border-slate-700/80 relative overflow-hidden">
-                    <div class="max-w-3xl mb-8">
-                        <span class="text-xs font-semibold tracking-widest text-brand-400 uppercase">Interactive Engineering Tool</span>
-                        <h2 class="text-3xl font-bold text-white mt-1">NPD & Component Feasibility Estimator</h2>
-                        <p class="text-slate-400 text-sm mt-2">
-                            Select component parameters to instantly estimate production lead times and CCPL machining alignment.
-                        </p>
-                    </div>
-
-                    <div class="grid lg:grid-cols-12 gap-8 items-start">
-                        
-                        <!-- Form Inputs -->
-                        <div class="lg:col-span-7 space-y-5">
-                            
-                            <!-- Material Selection -->
+                <div class="lg:col-span-5">
+                    <div class="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center justify-between">
+                            <span>Plant Live Metrics</span>
+                            <span class="text-xs px-2 py-1 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-medium">Operational</span>
+                        </h3>
+                        <div class="space-y-4">
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Material Specification</label>
-                                <select id="calcMaterial" onchange="calculateFeasibility()" class="w-full bg-slate-900/90 border border-slate-700 rounded-lg px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-brand-500">
-                                    <option value="EN8">EN8 Steel Forging (Suspension & Bushes)</option>
-                                    <option value="ERW">ERW Pipe Base (Starter Motor Casings)</option>
-                                    <option value="SolidBar">Solid Steel Bar (Control Shafts & Levers)</option>
-                                    <option value="SGiron">SG / Grey Iron Casting (A.ES Foundry Sump/Pulleys)</option>
+                                <div class="flex justify-between text-sm font-medium mb-1">
+                                    <span class="text-slate-600 dark:text-slate-300">Capacity Utilization</span>
+                                    <span class="text-brand-600 dark:text-brand-400 font-bold">80% (20% Buffer Available)</span>
+                                </div>
+                                <div class="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                    <div class="h-full bg-brand-600 rounded-full" style="width: 80%"></div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 pt-2">
+                                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50">
+                                    <span class="block text-2xl font-black text-slate-900 dark:text-white">±0.003</span>
+                                    <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">mm Micrometer Tolerance</span>
+                                </div>
+                                <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50">
+                                    <span class="block text-2xl font-black text-slate-900 dark:text-white">100%</span>
+                                    <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Mitutoyo Lab Inspected</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="capabilities" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div>
+                <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider">Advanced Infrastructure</span>
+                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Machinery & Metrology Fleet</h2>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-4 md:mt-0">
+                <button onclick="filterFleet('all')" class="fleet-tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-brand-600 text-white shadow-sm transition-all">All Assets</button>
+                <button onclick="filterFleet('turning')" class="fleet-tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">CNC Turning</button>
+                <button onclick="filterFleet('vmc')" class="fleet-tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">VMC Milling</button>
+                <button onclick="filterFleet('laser')" class="fleet-tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">Laser & Quality</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="machine-card fleet-turning p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-brand-100 dark:bg-brand-950 text-brand-700 dark:text-brand-300">CNC Turning Line</span>
+                        <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Qty: 12 Units</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Jyoti DX Series CNC Lathe</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 mt-2">High-speed rigid bed lathe engineered for close tolerance cylindrical turning, boring, and threading on steel/alloy billets.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <span class="text-xs font-mono font-bold text-brand-600 dark:text-brand-400">Repeatability: ±0.003mm</span>
+                    <button onclick="openMachineModal('Jyoti DX Series CNC Lathe', 'Rigid inclined bed CNC lathe with hydraulic turret, tailstock, and continuous chip conveyor. Suitable for high-volume shaft and ring components.', '12 Units', '±0.003 mm', '4000 RPM Spindle')" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:bg-brand-600 hover:text-white transition-all">Specs</button>
+                </div>
+            </div>
+
+            <div class="machine-card fleet-turning p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-brand-100 dark:bg-brand-950 text-brand-700 dark:text-brand-300">CNC Turning Line</span>
+                        <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Qty: 8 Units</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">ACE Precision CNC Lathe</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 mt-2">Equipped with hydraulic chucks and automatic bar feeders for uninterrupted high-volume automotive component production.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <span class="text-xs font-mono font-bold text-brand-600 dark:text-brand-400">Spindle: 4000 RPM</span>
+                    <button onclick="openMachineModal('ACE Precision CNC Lathe', 'Heavy-duty turning center with Fanuc control systems, hydraulic bar feeder, and live tooling options for complex turning & milling operations.', '8 Units', '±0.004 mm', 'Fanuc Oi-TF Control')" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:bg-brand-600 hover:text-white transition-all">Specs</button>
+                </div>
+            </div>
+
+            <div class="machine-card fleet-vmc p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-accent-500/20 text-accent-600 dark:text-accent-300">4-Axis Milling</span>
+                        <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Qty: 6 Units</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">BFW 544 4-Axis VMC</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 mt-2">Vertical Machining Center optimized for complex multi-face milling on SG iron oil sumps, pump bodies, and housings.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <span class="text-xs font-mono font-bold text-accent-600 dark:text-accent-400">Table: 1000x500mm</span>
+                    <button onclick="openMachineModal('BFW 544 4-Axis VMC', 'High-performance vertical machining center featuring a 4th axis rotary table, arm-type ATC, and high-pressure coolant through spindle.', '6 Units', '±0.005 mm', '10000 RPM Spindle')" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:bg-brand-600 hover:text-white transition-all">Specs</button>
+                </div>
+            </div>
+
+            <div class="machine-card fleet-laser p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300">Sheet & Blanking</span>
+                        <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Qty: 2 Units</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">3kW High-Speed Fiber Laser</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 mt-2">Fiber laser cutting system for clean, burr-free profiling of steel sheets, custom flanges, and structural brackets.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <span class="text-xs font-mono font-bold text-purple-600 dark:text-purple-400">Tolerance: ±0.02mm</span>
+                    <button onclick="openMachineModal('3kW High-Speed Fiber Laser', 'Advanced CNC fiber laser cutter with auto-nesting software and dual shuttle tables for continuous sheet metal blanking.', '2 Units', '±0.02 mm', 'Cutting up to 20mm MS')" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:bg-brand-600 hover:text-white transition-all">Specs</button>
+                </div>
+            </div>
+
+            <div class="machine-card fleet-laser p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">Metrology Lab</span>
+                        <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Certified ISO</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Mitutoyo QC Inspection Lab</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 mt-2">Equipped with digital height gauges, micrometers, surface roughness testers, and optical comparators for rigorous batch verification.</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <span class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">Resolution: 0.0001 mm</span>
+                    <button onclick="openMachineModal('Mitutoyo QC Inspection Lab', 'Comprehensive metrology laboratory featuring surface roughness testers, digital profile projectors, and hardened granite surface plates.', '1 Lab Facility', '0.0001 mm', '100% Traceable Calibration')" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:bg-brand-600 hover:text-white transition-all">Specs</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="inspector" class="py-20 bg-slate-100 dark:bg-slate-950 border-y border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider">Interactive 3D Engineering</span>
+                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Live Component Mesh Inspector</h2>
+                <p class="text-slate-600 dark:text-slate-300 mt-2">Inspect CCPL flagship manufactured components in real-time 3D. Click and drag to rotate, scroll to zoom.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-4 space-y-4">
+                    <button id="prod-btn-starter_casing" onclick="selectProduct('starter_casing')" class="prod-btn w-full text-left p-5 rounded-xl bg-white dark:bg-slate-900 border border-brand-600 border-l-4 border-l-brand-600 bg-brand-50/50 dark:bg-brand-950/20 shadow-sm transition-all">
+                        <span class="block text-xs uppercase font-bold text-brand-600">ERW Steel Tube</span>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mt-1">Starter Motor Pipe Casing</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">High-volume tubular turning & grooving</p>
+                    </button>
+
+                    <button id="prod-btn-suspension_bush" onclick="selectProduct('suspension_bush')" class="prod-btn w-full text-left p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-brand-500 shadow-sm transition-all">
+                        <span class="block text-xs uppercase font-bold text-brand-600">EN8 Alloy Steel</span>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mt-1">Suspension Bush & Lever</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Induction hardened high-load component</p>
+                    </button>
+
+                    <button id="prod-btn-sg_sump" onclick="selectProduct('sg_sump')" class="prod-btn w-full text-left p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-brand-500 shadow-sm transition-all">
+                        <span class="block text-xs uppercase font-bold text-brand-600">Ductile SG Iron</span>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mt-1">Automotive Oil Sump</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">4-axis VMC milled gasket surface</p>
+                    </button>
+
+                    <button id="prod-btn-v_pulley" onclick="selectProduct('v_pulley')" class="prod-btn w-full text-left p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-brand-500 shadow-sm transition-all">
+                        <span class="block text-xs uppercase font-bold text-brand-600">Cast Iron / Steel</span>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white mt-1">Machined V-Belt Pulley</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Balanced multi-groove power transmission</p>
+                    </button>
+                </div>
+
+                <div class="lg:col-span-8">
+                    <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
+                        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+                            <div>
+                                <span class="text-xs uppercase font-bold text-brand-600">Active Mesh Inspector</span>
+                                <h3 id="3d-part-title" class="text-xl font-extrabold text-slate-900 dark:text-white">Starter Motor Pipe Casing</h3>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-mono bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">WebGL 3D View</span>
+                        </div>
+
+                        <div id="three-canvas-container" class="w-full h-[380px] sm:h-[420px] rounded-xl bg-gradient-to-b from-slate-900 to-slate-950 relative overflow-hidden flex items-center justify-center shadow-inner">
+                            <span class="absolute bottom-4 left-4 text-xs text-slate-300 font-mono bg-slate-900/90 px-3 py-1.5 rounded-lg border border-slate-700 backdrop-blur-sm pointer-events-none z-10">💡 Drag to rotate • Scroll to zoom</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
+                            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50">
+                                <span class="block text-xs text-slate-500 dark:text-slate-400 font-medium">Material Spec</span>
+                                <span id="spec-material" class="text-sm font-bold text-slate-900 dark:text-white">ERW Steel Tube</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50">
+                                <span class="block text-xs text-slate-500 dark:text-slate-400 font-medium">Tolerance</span>
+                                <span id="spec-tolerance" class="text-sm font-bold text-slate-900 dark:text-white">±0.005 mm</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50">
+                                <span class="block text-xs text-slate-500 dark:text-slate-400 font-medium">Primary Process</span>
+                                <span id="spec-process" class="text-sm font-bold text-slate-900 dark:text-white">Jyoti DX CNC Turning</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50">
+                                <span class="block text-xs text-slate-500 dark:text-slate-400 font-medium">Monthly Capacity</span>
+                                <span id="spec-capacity" class="text-sm font-bold text-slate-900 dark:text-white">80,000 Pcs/mo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="foundry" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-6 space-y-6">
+                <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider">Metallurgical Integration</span>
+                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">Sister Foundry Ecosystem: A.ES Engineers</h2>
+                <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Unlike traditional machining job shops dependent on external casting vendors, CCPL is backed by our sister concern <strong>A.ES Engineers</strong>. Operating automated DISA and ARPA 300 sand molding lines, we deliver seamless raw ductile SG iron and grey iron castings straight to our CNC lines.
+                </p>
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 rounded-full bg-brand-100 dark:bg-brand-950 text-brand-600 flex items-center justify-center font-bold text-xs mt-1">✓</div>
+                        <div>
+                            <h4 class="font-bold text-slate-900 dark:text-white">Zero Casting Lead-Time Delays</h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-300">Direct metallurgical pouring ensures 100% material traceability and immediate rectification of metallurgical parameters.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 rounded-full bg-brand-100 dark:bg-brand-950 text-brand-600 flex items-center justify-center font-bold text-xs mt-1">✓</div>
+                        <div>
+                            <h4 class="font-bold text-slate-900 dark:text-white">Optimized Machining Allowances</h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-300">Castings are designed specifically with minimal stock allowance for high-speed CNC turning and VMC tool longevity.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-6">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+                        <span class="text-2xl">🔥</span>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white">Induction Melting</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Dual medium-frequency induction furnaces with precise chemical composition spectrometry.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+                        <span class="text-2xl">⚙️</span>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white">DISA Molding Lines</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">High-pressure green sand automated molding for superior surface finish and dimensional stability.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+                        <span class="text-2xl">🧪</span>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white">Spectro Analysis</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">100% optical emission spectrometer testing for carbon, silicon, and nodular graphite count.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+                        <span class="text-2xl">🛡️</span>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white">Shot Blasting & Heat Tx</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Continuous tumble blast cleaning and stress-relieving annealing furnaces.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="leadership" class="py-20 bg-white dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider">Executive Leadership & Profile</span>
+                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Yugansh Virmani — Managing Director</h2>
+                <p class="text-slate-600 dark:text-slate-300 mt-2">Bringing aerospace-grade structural engineering rigor and advanced manufacturing discipline to Tier-1 automotive OEMs.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Executive Profile Card (Left) -->
+                <div class="lg:col-span-4 p-6 sm:p-8 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-28 h-28 rounded-2xl bg-gradient-to-br from-brand-600 to-brand-900 flex items-center justify-center text-white font-black text-4xl shadow-lg mb-4">
+                            YV
+                        </div>
+                        <h3 class="text-xl font-extrabold text-slate-900 dark:text-white">Yugansh Virmani</h3>
+                        <span class="text-brand-600 dark:text-brand-400 font-semibold text-sm mt-0.5">Managing Director & Founder</span>
+                        <span class="text-xs text-slate-500 dark:text-slate-400 mt-1">CCPL Precision Engineering & A.ES Engineers</span>
+                    </div>
+
+                    <div class="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs font-medium">
+                        <div class="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/50">
+                            <span class="text-slate-500 dark:text-slate-400">Education</span>
+                            <span class="text-slate-900 dark:text-white font-semibold">M.S. Mechanical (ASU)</span>
+                        </div>
+                        <div class="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/50">
+                            <span class="text-slate-500 dark:text-slate-400">Background</span>
+                            <span class="text-slate-900 dark:text-white font-semibold">Ex-Boeing Structural Eng</span>
+                        </div>
+                        <div class="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/50">
+                            <span class="text-slate-500 dark:text-slate-400">Specialization</span>
+                            <span class="text-slate-900 dark:text-white font-semibold">Tier-1 OEM Scaling & Foundry</span>
+                        </div>
+                        <div class="flex justify-between py-1.5">
+                            <span class="text-slate-500 dark:text-slate-400">Location</span>
+                            <span class="text-slate-900 dark:text-white font-semibold">Faridabad, India</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Professional Profile & Experience (Right) -->
+                <div class="lg:col-span-8 space-y-6">
+                    <div class="p-8 rounded-3xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
+                        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-brand-100 dark:bg-brand-950 text-brand-700 dark:text-brand-300 text-xs font-semibold">
+                            <span>Professional Biography & Credentials</span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white leading-snug">
+                            Bridging Aerospace Structural Rigor with High-Volume Automotive Manufacturing
+                        </h3>
+                        <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
+                            Yugansh Virmani brings world-class engineering methodology honed at <strong>Boeing</strong> to the Indian precision manufacturing sector. Armed with a Master of Science in Mechanical Engineering from <strong>Arizona State University (ASU)</strong>, his leadership centers on eliminating micro-deficiencies, instituting rigorous statistical quality controls, and pioneering vertical integration between raw SG iron casting (A.ES Engineers) and high-speed CNC machining (CCPL).
+                        </p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
+                                <div class="w-8 h-8 rounded-lg bg-brand-100 dark:bg-brand-950 text-brand-600 flex items-center justify-center font-bold text-sm">✈️</div>
+                                <h4 class="font-bold text-slate-900 dark:text-white text-sm">Boeing Engineering Heritage</h4>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Applied structural finite element analysis and fatigue tolerance standards to commercial component production.</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
+                                <div class="w-8 h-8 rounded-lg bg-brand-100 dark:bg-brand-950 text-brand-600 flex items-center justify-center font-bold text-sm">🏭</div>
+                                <h4 class="font-bold text-slate-900 dark:text-white text-sm">Foundry-to-CNC Synergy</h4>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Direct metallurgical oversight ensuring zero lead-time bottlenecks and optimal machining allowances.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-brand-50/60 dark:bg-brand-950/40 border border-brand-200 dark:border-brand-800 text-xs text-brand-800 dark:text-brand-200 font-medium italic">
+                            "Our mission is to guarantee that every Tier-1 OEM partner receives components manufactured to uncompromising tolerances, supported by a 20% dedicated reserve capacity buffer for seamless supply chain resilience." — Yugansh Virmani
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="rfq" class="py-20 bg-slate-100 dark:bg-slate-950 border-y border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider">Instant Quotation Engine</span>
+                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">NPD Feasibility & RFQ Estimator</h2>
+                <p class="text-slate-600 dark:text-slate-300 mt-2">Configure your component parameters to calculate estimated cycle times, routing sequences, and production lead times instantly.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-7 p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
+                    <form onsubmit="calculateRFQ(event)" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-800 dark:text-slate-200 mb-2">Select Material Grade</label>
+                            <div class="grid grid-cols-3 gap-3">
+                                <label class="border border-slate-200 dark:border-slate-700 rounded-xl p-3 flex flex-col items-center cursor-pointer hover:border-brand-500 transition-all">
+                                    <input type="radio" name="rfq_material" value="erw_steel" checked onchange="updateRFQState()" class="text-brand-600 mb-1">
+                                    <span class="text-xs font-bold text-slate-900 dark:text-white text-center">ERW Steel Tube</span>
+                                </label>
+                                <label class="border border-slate-200 dark:border-slate-700 rounded-xl p-3 flex flex-col items-center cursor-pointer hover:border-brand-500 transition-all">
+                                    <input type="radio" name="rfq_material" value="en8_alloy" onchange="updateRFQState()" class="text-brand-600 mb-1">
+                                    <span class="text-xs font-bold text-slate-900 dark:text-white text-center">EN8 Alloy Steel</span>
+                                </label>
+                                <label class="border border-slate-200 dark:border-slate-700 rounded-xl p-3 flex flex-col items-center cursor-pointer hover:border-brand-500 transition-all">
+                                    <input type="radio" name="rfq_material" value="sg_iron" onchange="updateRFQState()" class="text-brand-600 mb-1">
+                                    <span class="text-xs font-bold text-slate-900 dark:text-white text-center">Ductile SG Iron</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-slate-800 dark:text-slate-200 mb-2">Primary Machining Process</label>
+                            <select id="rfq_process" onchange="updateRFQState()" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white font-medium focus:outline-none focus:border-brand-500">
+                                <option value="turning">CNC Turning & Grooving (Jyoti / ACE)</option>
+                                <option value="vmc">4-Axis VMC Milling & Boring (BFW)</option>
+                                <option value="turning_vmc">Combined Turning + VMC Secondary Ops</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-800 dark:text-slate-200 mb-2">Annual Volume (Pcs)</label>
+                                <input type="number" id="rfq_volume" value="25000" min="1000" step="1000" oninput="updateRFQState()" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white font-medium focus:outline-none focus:border-brand-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-800 dark:text-slate-200 mb-2">Target Tolerance (± mm)</label>
+                                <select id="rfq_tolerance" onchange="updateRFQState()" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white font-medium focus:outline-none focus:border-brand-500">
+                                    <option value="0.01">Standard (±0.010 mm)</option>
+                                    <option value="0.005" selected>Precision (±0.005 mm)</option>
+                                    <option value="0.003">Ultra-Precision (±0.003 mm)</option>
                                 </select>
                             </div>
-
-                            <!-- Processing Type -->
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Primary Manufacturing Operations</label>
-                                <div class="grid grid-cols-2 gap-3">
-                                    <label class="p-3 rounded-lg bg-slate-900/60 border border-slate-800 flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
-                                        <input type="checkbox" id="opCNC" checked onchange="calculateFeasibility()" class="accent-brand-500"> CNC Turning
-                                    </label>
-                                    <label class="p-3 rounded-lg bg-slate-900/60 border border-slate-800 flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
-                                        <input type="checkbox" id="opVMC" checked onchange="calculateFeasibility()" class="accent-brand-500"> VMC Milling
-                                    </label>
-                                    <label class="p-3 rounded-lg bg-slate-900/60 border border-slate-800 flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
-                                        <input type="checkbox" id="opLaser" onchange="calculateFeasibility()" class="accent-brand-500"> 3kW Fiber Laser
-                                    </label>
-                                    <label class="p-3 rounded-lg bg-slate-900/60 border border-slate-800 flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
-                                        <input type="checkbox" id="opPlating" onchange="calculateFeasibility()" class="accent-brand-500"> Case Hardening / Plating
-                                    </label>
-                                </div>
-                            </div>
-
-                            <!-- Batch Volume -->
-                            <div>
-                                <div class="flex justify-between text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
-                                    <span>Monthly Batch Volume</span>
-                                    <span id="volVal" class="text-brand-400 font-bold">5,000 Units</span>
-                                </div>
-                                <input type="range" id="calcVolume" min="500" max="50000" step="500" value="5000" oninput="calculateFeasibility()" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-500">
-                            </div>
-
                         </div>
 
-                        <!-- Output Results Card -->
-                        <div class="lg:col-span-5 glass-card p-6 rounded-2xl bg-slate-900/90 border border-slate-700 space-y-4">
-                            <h3 class="text-sm font-bold uppercase tracking-wider text-brand-400">Feasibility Breakdown</h3>
-                            
-                            <div class="space-y-3 text-xs">
-                                <div class="flex justify-between py-2 border-b border-slate-800">
-                                    <span class="text-slate-400">Sample Prototype Lead Time:</span>
-                                    <span id="outProto" class="font-bold text-white">5 - 7 Days</span>
-                                </div>
-                                <div class="flex justify-between py-2 border-b border-slate-800">
-                                    <span class="text-slate-400">Batch Production Lead Time:</span>
-                                    <span id="outProd" class="font-bold text-white">10 - 12 Days</span>
-                                </div>
-                                <div class="flex justify-between py-2 border-b border-slate-800">
-                                    <span class="text-slate-400">Tolerance Class:</span>
-                                    <span class="font-bold text-emerald-400">Sub-Micron (Mitutoyo Lab)</span>
-                                </div>
-                                <div class="flex justify-between py-2 border-b border-slate-800">
-                                    <span class="text-slate-400">Capacity Alignment:</span>
-                                    <span class="font-bold text-cyan-400">Covered by 20% Reserve Buffer</span>
-                                </div>
-                            </div>
-
-                            <div class="p-3.5 rounded-xl bg-brand-950/60 border border-brand-800/50 text-xs text-slate-300">
-                                <p id="outSummary"><i class="fa-solid fa-circle-check text-emerald-400 mr-1.5"></i> Optimal match for CCPL's CNC turning fleet & Mitutoyo first-piece inspection workflow.</p>
-                            </div>
-
-                            <a href="#contact" class="block w-full text-center py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-brand-600 hover:bg-brand-500 text-white transition-all">
-                                Submit RFQ For This Spec
-                            </a>
+                        <div class="pt-4">
+                            <button type="submit" class="w-full py-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow-lg shadow-brand-600/25 transition-all">
+                                Generate Feasibility & Pricing Estimate
+                            </button>
                         </div>
-
-                    </div>
+                    </form>
                 </div>
-            </section>
 
-        </div>
-
-
-        <!-- ========================================================================= -->
-        <!-- VIEW 2: FOUNDER & LEADERSHIP PROFILE (YUGANSH VIRMANI)                     -->
-        <!-- ========================================================================= -->
-        <div id="founder-view" class="view-section hidden">
-            
-            <!-- Founder Executive Hero -->
-            <section id="founder-bio" class="pt-12 pb-16 md:pt-20 md:pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid lg:grid-cols-12 gap-12 items-center">
-                    
-                    <div class="lg:col-span-7 space-y-6">
-                        <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-400/30 text-brand-400 text-xs font-semibold tracking-wider uppercase">
-                            <i class="fa-solid fa-plane-up"></i> Executive Leadership Profile
-                        </div>
-                        
-                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight">
-                            Yugansh Virmani <br>
-                            <span class="bg-gradient-to-r from-brand-400 via-sky-300 to-cyan-400 bg-clip-text text-transparent">Founder & Managing Director</span>
-                        </h1>
-
-                        <p class="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
-                            Former Structural Design Engineer at <strong class="text-white">The Boeing Company</strong> holding a Master of Science (M.S.) in Mechanical Engineering from <strong class="text-white">Arizona State University (ASU), USA</strong>. Applying global aerospace structural testing rigor and zero-defect quality systems to commercial precision manufacturing in India.
-                        </p>
-
-                        <!-- Academic & Industry Badges -->
-                        <div class="flex flex-wrap gap-3 pt-2">
-                            <div class="glass-card px-3.5 py-2 rounded-lg text-xs font-medium text-slate-300 flex items-center gap-2 border border-slate-700/80">
-                                <i class="fa-solid fa-plane text-brand-400"></i> Ex-Boeing Structural Engineer
+                <div class="lg:col-span-5">
+                    <div id="rfq-result-card" class="p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6 h-full flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+                                <span class="text-xs uppercase font-bold text-brand-600">Feasibility Report</span>
+                                <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">Feasible</span>
                             </div>
-                            <div class="glass-card px-3.5 py-2 rounded-lg text-xs font-medium text-slate-300 flex items-center gap-2 border border-slate-700/80">
-                                <i class="fa-solid fa-graduation-cap text-cyan-400"></i> M.S. Mechanical (ASU, USA)
-                            </div>
-                            <div class="glass-card px-3.5 py-2 rounded-lg text-xs font-medium text-slate-300 flex items-center gap-2 border border-slate-700/80">
-                                <i class="fa-solid fa-shield-halved text-emerald-400"></i> 4+ Yrs NPD & Tooling Leadership
+
+                            <div class="space-y-6 pt-6">
+                                <div>
+                                    <span class="block text-xs text-slate-500 dark:text-slate-400 uppercase font-medium">Estimated Cycle Time / Part</span>
+                                    <span id="res-cycletime" class="text-3xl font-black text-slate-900 dark:text-white">45.2 Sec</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50">
+                                        <span class="block text-xs text-slate-500 dark:text-slate-400">Production Lead Time</span>
+                                        <span id="res-leadtime" class="text-lg font-bold text-brand-600 dark:text-brand-400">3 Weeks</span>
+                                    </div>
+                                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50">
+                                        <span class="block text-xs text-slate-500 dark:text-slate-400">Reserve Capacity</span>
+                                        <span class="text-lg font-bold text-emerald-600 dark:text-emerald-400">20% Allocated</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-slate-500 dark:text-slate-400 uppercase font-medium mb-2">Recommended Routing Sequence</span>
+                                    <div id="res-routing" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 text-xs font-mono text-slate-700 dark:text-slate-300 space-y-1">
+                                        <div>1. Raw Material Receiving & Spectro Check</div>
+                                        <div>2. Jyoti DX CNC Turning & Groove Boring</div>
+                                        <div>3. Mitutoyo 100% CMM & Air Gauge Check</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Founder Actions -->
-                        <div class="pt-4 flex flex-wrap items-center gap-4">
-                            <a href="tel:+919899078302" class="px-6 py-3 rounded-xl bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-500 hover:to-brand-400 text-white font-semibold text-sm shadow-lg shadow-brand-500/25 transition-all flex items-center gap-2">
-                                <i class="fa-solid fa-phone"></i> Call Direct: +91 98990 78302
-                            </a>
-                            <button onclick="switchMainView('company')" class="px-6 py-3 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 text-slate-200 font-semibold text-sm border border-slate-700 transition-all flex items-center gap-2">
-                                <i class="fa-solid fa-building text-brand-400"></i> View CCPL Plant Portfolio
+                        <div class="pt-6 border-t border-slate-100 dark:border-slate-800">
+                            <button onclick="showQuoteModal()" class="w-full py-3.5 rounded-xl bg-slate-900 dark:bg-slate-800 text-white font-semibold text-sm hover:bg-slate-800 dark:hover:bg-slate-700 transition-all">
+                                Submit Official RFQ Package
                             </button>
                         </div>
                     </div>
-
-                    <!-- Profile Visual Avatar Card -->
-                    <div class="lg:col-span-5">
-                        <div class="relative mx-auto max-w-md lg:max-w-none">
-                            <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-brand-500 to-cyan-500 opacity-20 blur-xl"></div>
-                            
-                            <div class="relative glass-card p-8 rounded-3xl border border-slate-700/80 space-y-6 text-center">
-                                <div class="w-28 h-28 mx-auto rounded-3xl bg-gradient-to-br from-slate-800 to-navy-800 border-2 border-brand-500/50 flex items-center justify-center text-brand-400 font-heading font-extrabold text-4xl shadow-inner">
-                                    YV
-                                </div>
-                                
-                                <div>
-                                    <h3 class="font-heading font-bold text-2xl text-white">Yugansh Virmani</h3>
-                                    <p class="text-sm text-brand-400 font-medium mt-1">Founder & Executive Managing Director</p>
-                                    <p class="text-xs text-slate-400 mt-0.5">CCPL Precision Engineering & A.ES Engineers</p>
-                                </div>
-
-                                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-left text-xs text-slate-300 space-y-2">
-                                    <div class="flex items-center gap-2 text-slate-200">
-                                        <i class="fa-solid fa-envelope text-brand-400"></i>
-                                        <span>Direct Executive Contact Available</span>
-                                    </div>
-                                    <div class="flex items-center gap-2 text-slate-200">
-                                        <i class="fa-solid fa-location-dot text-brand-400"></i>
-                                        <span>Faridabad Manufacturing Hub, India</span>
-                                    </div>
-                                </div>
-
-                                <div class="p-4 rounded-xl bg-brand-950/40 border border-brand-800/40 text-xs text-slate-300 italic text-left">
-                                    "Engineered discipline isn't optional—whether designing flight structural components for Boeing or producing sub-micron automotive parts at CCPL."
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
-            </section>
+            </div>
+        </div>
+    </section>
 
-            <!-- Boeing Pedigree & ASU Master's Section -->
-            <section id="boeing-pedigree" class="py-16 bg-navy-950/60 border-y border-slate-800/80">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    
-                    <div class="text-center max-w-3xl mx-auto mb-12">
-                        <span class="text-xs font-semibold tracking-widest text-brand-400 uppercase">Aerospace Engineering Heritage</span>
-                        <h2 class="text-3xl sm:text-4xl font-bold text-white mt-1">Boeing Rigor & Academic Master's</h2>
-                        <p class="text-slate-400 mt-3 text-sm sm:text-base">
-                            The background that shapes CCPL's zero-defect culture and advanced NPD engineering framework.
-                        </p>
-                    </div>
-
-                    <div class="grid md:grid-cols-2 gap-8">
-                        
-                        <!-- Boeing Card -->
-                        <div class="glass-card p-8 rounded-2xl glass-card-hover space-y-5 border-l-4 border-l-brand-500">
-                            <div class="flex items-center justify-between">
-                                <div class="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-400/20 flex items-center justify-center text-brand-400 text-2xl">
-                                    <i class="fa-solid fa-plane"></i>
-                                </div>
-                                <span class="px-3 py-1 rounded-full bg-slate-800 text-xs font-medium text-slate-300">Aerospace Industry</span>
-                            </div>
-
-                            <div>
-                                <h3 class="text-xl font-bold text-white font-heading">Structural Design Engineer</h3>
-                                <p class="text-sm text-brand-400 font-medium">The Boeing Company</p>
-                            </div>
-
-                            <ul class="space-y-2.5 text-sm text-slate-300">
-                                <li class="flex items-start gap-2.5">
-                                    <i class="fa-solid fa-check text-brand-400 mt-1"></i>
-                                    <span>Engineered <strong>structural testing setups</strong>, stress integrity validations, and finite element modeling (FEA) for aircraft assemblies.</span>
-                                </li>
-                                <li class="flex items-start gap-2.5">
-                                    <i class="fa-solid fa-check text-brand-400 mt-1"></i>
-                                    <span>Instilled <strong>zero-defect aerospace protocols</strong> into manufacturing SOPs, inspection, and material traceability.</span>
-                                </li>
-                                <li class="flex items-start gap-2.5">
-                                    <i class="fa-solid fa-check text-brand-400 mt-1"></i>
-                                    <span>Managed cross-functional root-cause analysis (8D / 5-Why) for structural components under dynamic fatigue loading.</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Academic Card -->
-                        <div id="education" class="glass-card p-8 rounded-2xl glass-card-hover space-y-5 border-l-4 border-l-cyan-500">
-                            <div class="flex items-center justify-between">
-                                <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-400/20 flex items-center justify-center text-cyan-400 text-2xl">
-                                    <i class="fa-solid fa-graduation-cap"></i>
-                                </div>
-                                <span class="px-3 py-1 rounded-full bg-slate-800 text-xs font-medium text-slate-300">Higher Education</span>
-                            </div>
-
-                            <div>
-                                <h3 class="text-xl font-bold text-white font-heading">Master of Science (M.S.) in Mechanical Engineering</h3>
-                                <p class="text-sm text-cyan-400 font-medium">Arizona State University (ASU), Tempe, USA</p>
-                            </div>
-
-                            <ul class="space-y-2.5 text-sm text-slate-300">
-                                <li class="flex items-start gap-2.5">
-                                    <i class="fa-solid fa-check text-cyan-400 mt-1"></i>
-                                    <span>Advanced specialization in solid mechanics, structural dynamics, and computational CAD/CAM modeling.</span>
-                                </li>
-                                <li class="flex items-start gap-2.5">
-                                    <i class="fa-solid fa-check text-cyan-400 mt-1"></i>
-                                    <span>Hands-on research on material deformation, tool geometry optimization, and automated manufacturing systems.</span>
-                                </li>
-                                <li class="flex items-start gap-2.5">
-                                    <i class="fa-solid fa-check text-cyan-400 mt-1"></i>
-                                    <span>Collaborated with US university research labs focusing on modern precision engineering methodologies.</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                    </div>
-                </div>
-            </section>
-
-            <!-- Leadership Timeline & Vision -->
-            <section id="leadership-vision" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid lg:grid-cols-12 gap-12 items-center">
-                    
-                    <div class="lg:col-span-6 space-y-6">
-                        <span class="text-xs font-semibold tracking-widest text-brand-400 uppercase">Leadership Philosophy</span>
-                        <h2 class="text-3xl font-bold text-white">Make-in-India Aerospace Rigor</h2>
-                        <p class="text-slate-300 text-sm leading-relaxed">
-                            "When I established CCPL Precision Engineering, the objective was clear: bring the structural engineering discipline learned in aerospace to Indian commercial manufacturing. By offering 20% dedicated reserve capacity and integrating our sister sand foundry, we eliminate the friction that OEMs usually experience during volume scaling."
-                        </p>
-                        
-                        <div class="p-5 rounded-2xl glass-card space-y-3">
-                            <h4 class="font-heading font-bold text-white text-base">Key Leadership Pillars</h4>
-                            <div class="grid grid-cols-2 gap-3 text-xs text-slate-300">
-                                <div class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Sub-micron Quality Focus</div>
-                                <div class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Zero OEM Bottlenecks</div>
-                                <div class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> Cast-to-Machine Synergy</div>
-                                <div class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-400"></i> 100% Lot Traceability</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Career Milestones Timeline Card -->
-                    <div class="lg:col-span-6 glass-card p-8 rounded-3xl border border-slate-700/80 space-y-6">
-                        <h3 class="font-heading font-bold text-xl text-white border-b border-slate-800 pb-4">Career & Enterprise Milestones</h3>
-                        
-                        <div class="space-y-6 text-xs relative pl-6 border-l border-slate-800">
-                            <!-- Timeline Item 1 -->
-                            <div class="relative">
-                                <span class="absolute -left-[31px] top-0.5 w-4 h-4 rounded-full bg-brand-500 border-4 border-navy-900"></span>
-                                <span class="text-brand-400 font-bold uppercase tracking-wider">USA Education</span>
-                                <h4 class="text-sm font-bold text-white mt-0.5">M.S. Mechanical Engineering - ASU</h4>
-                                <p class="text-slate-400 mt-1">Specialized in solid mechanics, structural analysis, and CAD automation at Arizona State University.</p>
-                            </div>
-
-                            <!-- Timeline Item 2 -->
-                            <div class="relative">
-                                <span class="absolute -left-[31px] top-0.5 w-4 h-4 rounded-full bg-cyan-500 border-4 border-navy-900"></span>
-                                <span class="text-cyan-400 font-bold uppercase tracking-wider">Aerospace Industry</span>
-                                <h4 class="text-sm font-bold text-white mt-0.5">Structural Design Engineer - Boeing</h4>
-                                <p class="text-slate-400 mt-1">Led aircraft structural testing, FEA stress validation, and zero-defect aerospace engineering procedures.</p>
-                            </div>
-
-                            <!-- Timeline Item 3 -->
-                            <div class="relative">
-                                <span class="absolute -left-[31px] top-0.5 w-4 h-4 rounded-full bg-emerald-500 border-4 border-navy-900"></span>
-                                <span class="text-emerald-400 font-bold uppercase tracking-wider">Enterprise Founder</span>
-                                <h4 class="text-sm font-bold text-white mt-0.5">Founded CCPL Precision Engineering & A.ES Integration</h4>
-                                <p class="text-slate-400 mt-1">Established state-of-the-art CNC machining plant in Faridabad and integrated sister sand foundry for single-source Cast-to-Machine delivery.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </section>
-
+    <section id="quality" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider">Zero-Defect Quality Assurance</span>
+            <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Metrology & Rigorous Inspection</h2>
+            <p class="text-slate-600 dark:text-slate-300 mt-2">Every batch leaving CCPL undergoes stringent dimensional and metallurgical verification backed by traceable calibration certificates.</p>
         </div>
 
-        <!-- ========================================================================= -->
-        <!-- SHARED EXECUTIVE CONTACT & RFQ INQUIRY SECTION                            -->
-        <!-- ========================================================================= -->
-        <section id="contact" class="py-16 bg-navy-950/80 border-t border-slate-800">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                
-                <div class="grid lg:grid-cols-12 gap-12">
-                    
-                    <!-- Direct Contact Card -->
-                    <div class="lg:col-span-5 space-y-6">
-                        <span class="text-xs font-semibold tracking-widest text-brand-400 uppercase">Direct Executive & Plant Contact</span>
-                        <h2 class="text-3xl sm:text-4xl font-bold text-white">Connect with Our Team</h2>
-                        <p class="text-slate-400 text-sm leading-relaxed">
-                            Reach out directly to Yugansh Virmani and the CCPL engineering team for plant audits, RFQ component pricing, drawing reviews, or OEM partnership discussions.
-                        </p>
-
-                        <div class="space-y-4 pt-2 text-sm">
-                            <div class="flex items-center gap-4 p-4 rounded-xl glass-card">
-                                <div class="w-10 h-10 rounded-lg bg-brand-500/10 text-brand-400 flex items-center justify-center text-lg">
-                                    <i class="fa-solid fa-phone"></i>
-                                </div>
-                                <div>
-                                    <div class="text-xs text-slate-400">Direct Executive Phone</div>
-                                    <a href="tel:+919899078302" class="font-bold text-white hover:text-brand-400 transition-colors">+91 98990 78302</a>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center gap-4 p-4 rounded-xl glass-card">
-                                <div class="w-10 h-10 rounded-lg bg-brand-500/10 text-brand-400 flex items-center justify-center text-lg">
-                                    <i class="fa-solid fa-location-dot"></i>
-                                </div>
-                                <div>
-                                    <div class="text-xs text-slate-400">Manufacturing Plant Location</div>
-                                    <div class="font-bold text-white">Faridabad, Haryana, India</div>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center gap-4 p-4 rounded-xl glass-card">
-                                <div class="w-10 h-10 rounded-lg bg-brand-500/10 text-brand-400 flex items-center justify-center text-lg">
-                                    <i class="fa-solid fa-building flex"></i>
-                                </div>
-                                <div>
-                                    <div class="text-xs text-slate-400">Registered Corporate Entity</div>
-                                    <div class="font-bold text-white">CCPL Precision Engineering</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Direct Inquiry / RFQ Form -->
-                    <div class="lg:col-span-7 glass-card p-8 rounded-3xl border border-slate-700/80">
-                        <h3 class="text-xl font-bold text-white font-heading mb-6">Submit RFQ / Plant Audit Inquiry</h3>
-                        
-                        <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
-                            <div class="grid sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-medium text-slate-300 mb-1.5">Your Name</label>
-                                    <input type="text" id="formName" required placeholder="e.g. Executive Procurement Lead" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-brand-500">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-slate-300 mb-1.5">Company / OEM Name</label>
-                                    <input type="text" id="formCompany" required placeholder="e.g. Uno Minda / Automotive OEM" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-brand-500">
-                                </div>
-                            </div>
-
-                            <div class="grid sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-medium text-slate-300 mb-1.5">Email Address</label>
-                                    <input type="email" id="formEmail" required placeholder="name@company.com" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-brand-500">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-slate-300 mb-1.5">Inquiry Type</label>
-                                    <select id="formType" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-brand-500">
-                                        <option>Component RFQ / Drawing Review</option>
-                                        <option>Plant Audit Schedule</option>
-                                        <option>Cast-to-Machine Foundry Inquiry</option>
-                                        <option>Strategic Partnership Discussion</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-medium text-slate-300 mb-1.5">Project Details / Component Specifications</label>
-                                <textarea id="formMessage" rows="4" required placeholder="Describe material grade, target tolerances, monthly volume, or plant audit requirements..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-brand-500"></textarea>
-                            </div>
-
-                            <button type="submit" class="w-full py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-500 hover:to-brand-400 text-white shadow-lg shadow-brand-500/25 transition-all">
-                                Send Inquiry to CCPL Engineering
-                            </button>
-                        </form>
-
-                        <div id="formStatus" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-medium text-center">
-                            Thank you! Your RFQ inquiry has been registered. Yugansh Virmani's executive team will get back to you within 24 hours.
-                        </div>
-                    </div>
-
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                <div class="w-12 h-12 rounded-xl bg-brand-100 dark:bg-brand-950 text-brand-600 flex items-center justify-center font-bold text-xl">01</div>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Incoming Raw Material QC</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Optical emission spectroscopy for chemical composition analysis, ultrasonic testing for internal flaws, and hardness testing (Brinell/Rockwell) on all steel bars and SG iron castings.</p>
             </div>
-        </section>
-    </main>
-
-    <footer class="py-8 bg-navy-950 border-t border-slate-800/80 text-xs text-slate-400">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div>
-                <p>&copy; 2026 CCPL Precision Engineering · Managing Director: Yugansh Virmani. All rights reserved.</p>
+            <div class="p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                <div class="w-12 h-12 rounded-xl bg-brand-100 dark:bg-brand-950 text-brand-600 flex items-center justify-center font-bold text-xl">02</div>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">In-Process Statistical QC</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Operators perform hourly sample inspections using digital micrometers, bore gauges, and air gauges with SPC chart logging to prevent tool wear deviations.</p>
             </div>
-            <div class="flex flex-wrap gap-4 text-slate-300">
-                <span>Faridabad, Haryana, India</span>
-                <span>•</span>
-                <span>ISO 9001:2015</span>
-                <span>•</span>
-                <span>Make-in-India</span>
+            <div class="p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                <div class="w-12 h-12 rounded-xl bg-brand-100 dark:bg-brand-950 text-brand-600 flex items-center justify-center font-bold text-xl">03</div>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Final Dispatch Audit</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Final lot inspection in our temperature-controlled Mitutoyo metrology lab issuing complete Inspection Test Certificates (ITC) with every dispatch consignment.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 dark:bg-slate-950 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded bg-brand-600 flex items-center justify-center text-white font-black text-sm">CC</div>
+                <span class="text-white font-bold tracking-tight">CCPL Precision Engineering Pvt. Ltd.</span>
+            </div>
+            <p class="text-xs text-slate-400 text-center md:text-left">
+                &copy; 2026 CCPL Precision Engineering. ISO 9001:2015 & IATF 16949 compliant Tier-1 OEM Supplier. Faridabad, Haryana, India.
+            </p>
+            <div class="flex space-x-6 text-xs">
+                <a href="#capabilities" class="hover:text-white transition-colors">Capabilities</a>
+                <a href="#inspector" class="hover:text-white transition-colors">3D Inspector</a>
+                <a href="#rfq" class="hover:text-white transition-colors">Instant RFQ</a>
             </div>
         </div>
     </footer>
 
-    <!-- Script Logic -->
+    <!-- Modal Container -->
+    <div id="app-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div id="modal-content" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                <h3 id="modal-title" class="text-lg font-bold text-slate-900 dark:text-white">Modal Title</h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold p-1">✕</button>
+            </div>
+            <div id="modal-body" class="text-sm text-slate-600 dark:text-slate-300 space-y-3">
+                Modal body content goes here.
+            </div>
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+                <button onclick="closeModal()" class="px-4 py-2 rounded-xl bg-brand-600 text-white font-semibold text-xs hover:bg-brand-700 transition-all">Close</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Main View Switcher (Company Portfolio vs Founder Profile)
-        function switchMainView(viewName) {
-            const companyView = document.getElementById('company-view');
-            const founderView = document.getElementById('founder-view');
-            const btnCompany = document.getElementById('nav-btn-company');
-            const btnFounder = document.getElementById('nav-btn-founder');
-            const mobBtnCompany = document.getElementById('mob-btn-company');
-            const mobBtnFounder = document.getElementById('mob-btn-founder');
-            const companyNav = document.getElementById('company-nav');
-            const founderNav = document.getElementById('founder-nav');
-            const mobCompanyLinks = document.getElementById('mob-company-links');
-            const mobFounderLinks = document.getElementById('mob-founder-links');
-
-            if (viewName === 'company') {
-                companyView.classList.remove('hidden');
-                founderView.classList.add('hidden');
-                
-                btnCompany.classList.add('tab-active');
-                btnCompany.classList.remove('text-slate-400');
-                btnFounder.classList.remove('tab-active');
-                btnFounder.classList.add('text-slate-400');
-
-                mobBtnCompany.className = "py-2.5 rounded text-white bg-brand-600";
-                mobBtnFounder.className = "py-2.5 rounded text-slate-400";
-
-                companyNav.classList.remove('hidden');
-                companyNav.classList.add('flex');
-                founderNav.classList.add('hidden');
-                founderNav.classList.remove('flex');
-
-                mobCompanyLinks.classList.remove('hidden');
-                mobFounderLinks.classList.add('hidden');
+        // Color Theme Toggle Function
+        function toggleColorTheme() {
+            const body = document.body;
+            const html = document.documentElement;
+            const btnText = document.getElementById('theme-btn-text');
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                html.classList.add('dark');
+                btnText.textContent = '☀️ Light Mode';
             } else {
-                companyView.classList.add('hidden');
-                founderView.classList.remove('hidden');
-
-                btnFounder.classList.add('tab-active');
-                btnFounder.classList.remove('text-slate-400');
-                btnCompany.classList.remove('tab-active');
-                btnCompany.classList.add('text-slate-400');
-
-                mobBtnFounder.className = "py-2.5 rounded text-white bg-brand-600";
-                mobBtnCompany.className = "py-2.5 rounded text-slate-400";
-
-                founderNav.classList.remove('hidden');
-                founderNav.classList.add('flex');
-                companyNav.classList.add('hidden');
-                companyNav.classList.remove('flex');
-
-                mobFounderLinks.classList.remove('hidden');
-                mobCompanyLinks.classList.add('hidden');
+                body.classList.remove('dark-mode');
+                html.classList.remove('dark');
+                body.classList.add('light-mode');
+                btnText.textContent = '🌙 Toggle Dark/Light';
             }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Mobile Drawer Toggle
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
+        // Fleet Filtering Function
+        function filterFleet(category) {
+            const buttons = document.querySelectorAll('.fleet-tab-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white', 'shadow-sm');
+                btn.classList.add('text-slate-700', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-800');
+            });
+            event.currentTarget.classList.add('bg-brand-600', 'text-white', 'shadow-sm');
+            event.currentTarget.classList.remove('text-slate-700', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-800');
 
-        function toggleMobileMenu() {
-            mobileMenu.classList.toggle('hidden');
+            const cards = document.querySelectorAll('.machine-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.classList.contains('fleet-' + category)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         }
 
-        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        // Modal Controls
+        function openMachineModal(name, desc, qty, tolerance, spindle) {
+            const modal = document.getElementById('app-modal');
+            document.getElementById('modal-title').textContent = name;
+            document.getElementById('modal-body').innerHTML = `
+                <p class="text-slate-700 dark:text-slate-200"><strong>Description:</strong> ${desc}</p>
+                <p class="text-slate-700 dark:text-slate-200"><strong>Installed Fleet Qty:</strong> ${qty}</p>
+                <p class="text-slate-700 dark:text-slate-200"><strong>Repeatability / Tolerance:</strong> ${tolerance}</p>
+                <p class="text-slate-700 dark:text-slate-200"><strong>Spindle / Control Spec:</strong> ${spindle}</p>
+                <div class="p-3 bg-brand-50 dark:bg-brand-950/60 rounded-xl border border-brand-200 dark:border-brand-800 text-xs text-brand-700 dark:text-brand-300 font-medium">
+                    ✓ Backed by 20% dedicated reserve capacity buffer and 24/7 preventive maintenance schedules.
+                </div>
+            `;
+            modal.classList.remove('hidden');
+        }
 
-        // Copy Contact Details Logic
-        function copyContactInfo() {
-            const textToCopy = "CCPL Precision Engineering | Yugansh Virmani (Founder & MD) | Phone: +91 98990 78302 | Plant: Faridabad, Haryana, India | ISO 9001:2015";
+        function showQuoteModal() {
+            const modal = document.getElementById('app-modal');
+            document.getElementById('modal-title').textContent = 'Official RFQ Package Submitted';
+            document.getElementById('modal-body').innerHTML = `
+                <div class="space-y-3 text-slate-700 dark:text-slate-200">
+                    <p class="font-bold text-emerald-600 dark:text-emerald-400">✓ Your RFQ estimation and routing package has been transmitted to CCPL Engineering Sales.</p>
+                    <p>Our applications engineering team will review your CAD/PDF drawings and respond with a formal quotation and PPAP timeline within 4 business hours.</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 font-mono">Reference ID: CCPL-RFQ-2026-9842</p>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('app-modal').classList.add('hidden');
+        }
+
+        // RFQ Estimator Calculator
+        function updateRFQState() {
+            const volume = parseInt(document.getElementById('rfq_volume').value) || 25000;
+            const tolerance = document.getElementById('rfq_tolerance').value;
+            const process = document.getElementById('rfq_process').value;
+
+            let baseTime = process === 'turning' ? 32 : process === 'vmc' ? 78 : 115;
+            if (tolerance === '0.003') baseTime *= 1.25;
+
+            document.getElementById('res-cycletime').textContent = baseTime.toFixed(1) + ' Sec';
             
-            const tempInput = document.createElement("textarea");
-            tempInput.value = textToCopy;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempInput);
+            let leadWeeks = volume > 50000 ? '4 Weeks' : '3 Weeks';
+            document.getElementById('res-leadtime').textContent = leadWeeks;
 
-            const copyBtnText = document.getElementById('copyBtnText');
-            copyBtnText.innerText = "Copied!";
-            setTimeout(() => {
-                copyBtnText.innerText = "Copy Contact";
-            }, 2500);
+            let routingHTML = `<div>1. Raw Material Receiving & Spectro Check</div>`;
+            if (process === 'turning' || process === 'turning_vmc') {
+                routingHTML += `<div>2. Jyoti DX / ACE CNC Turning & Grooving</div>`;
+            }
+            if (process === 'vmc' || process === 'turning_vmc') {
+                routingHTML += `<div>3. BFW 4-Axis VMC Milling & Boring</div>`;
+            }
+            routingHTML += `<div>4. Mitutoyo 100% CMM & Air Gauge Audit</div>`;
+            document.getElementById('res-routing').innerHTML = routingHTML;
         }
 
-        // NPD Feasibility Calculator Logic
-        function calculateFeasibility() {
-            const material = document.getElementById('calcMaterial').value;
-            const volume = parseInt(document.getElementById('calcVolume').value);
-            document.getElementById('volVal').innerText = volume.toLocaleString() + " Units";
+        function calculateRFQ(e) {
+            e.preventDefault();
+            updateRFQState();
+            showQuoteModal();
+        }
 
-            const opCNC = document.getElementById('opCNC').checked;
-            const opVMC = document.getElementById('opVMC').checked;
-            const opLaser = document.getElementById('opLaser').checked;
-            const opPlating = document.getElementById('opPlating').checked;
+        // Three.js 3D Interactive Component Inspector
+        let scene, camera, renderer, currentPartMesh, isDragging = false, previousMousePosition = { x: 0, y: 0 };
 
-            let baseProtoDays = 5;
-            let baseProdDays = 10;
-            
-            let opsCount = (opCNC ? 1 : 0) + (opVMC ? 1 : 0) + (opLaser ? 1 : 0) + (opPlating ? 1 : 0);
-            if (opsCount > 2) { baseProtoDays += 2; baseProdDays += 3; }
-            if (opsCount > 3) { baseProtoDays += 2; baseProdDays += 3; }
+        const productData = {
+            starter_casing: {
+                title: "Starter Motor Pipe Casing",
+                material: "ERW Steel Tube",
+                tolerance: "±0.005 mm",
+                process: "Jyoti DX CNC Turning",
+                capacity: "80,000 Pcs/mo",
+                meshType: "cylinder",
+                color: 0x0ea5e9
+            },
+            suspension_bush: {
+                title: "Suspension Bush & Lever",
+                material: "EN8 Alloy Steel",
+                tolerance: "±0.003 mm",
+                process: "ACE CNC Lathe + Induction",
+                capacity: "45,000 Pcs/mo",
+                meshType: "torus",
+                color: 0xf59e0b
+            },
+            sg_sump: {
+                title: "Automotive Oil Sump",
+                material: "Ductile SG Iron",
+                tolerance: "±0.008 mm",
+                process: "BFW 4-Axis VMC Milling",
+                capacity: "18,000 Pcs/mo",
+                meshType: "box",
+                color: 0x10b981
+            },
+            v_pulley: {
+                title: "Machined V-Belt Pulley",
+                material: "Cast Iron / Steel",
+                tolerance: "±0.005 mm",
+                process: "CNC Turning & Grooving",
+                capacity: "30,000 Pcs/mo",
+                meshType: "cylinder_groove",
+                color: 0x8b5cf6
+            }
+        };
 
-            if (volume > 10000) { baseProdDays += 3; }
-            if (volume > 30000) { baseProdDays += 4; }
+        function initThreeViewer() {
+            const container = document.getElementById('three-canvas-container');
+            if (!container) return;
 
-            document.getElementById('outProto').innerText = `${baseProtoDays} - ${baseProtoDays + 2} Days`;
-            document.getElementById('outProd').innerText = `${baseProdDays} - ${baseProdDays + 3} Days`;
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(0, 3, 6);
+            camera.lookAt(0, 0, 0);
 
-            let summaryText = `<i class="fa-solid fa-circle-check text-emerald-400 mr-1.5"></i> `;
-            if (material === 'SGiron') {
-                summaryText += "Cast-to-Machine synergy enabled via A.ES Engineers sand foundry & CCPL CNC milling lines.";
-            } else if (opLaser) {
-                summaryText += "High-speed 3kW Fiber Laser blanking combined with precision multi-axis machining.";
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            directionalLight.position.set(5, 10, 7);
+            scene.add(directionalLight);
+
+            const pointLight = new THREE.PointLight(0x0284c7, 2, 50);
+            pointLight.position.set(-5, -5, -5);
+            scene.add(pointLight);
+
+            loadPartMesh('starter_casing');
+
+            // Mouse / Touch Rotation Interactions
+            container.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                previousMousePosition = { x: e.clientX, y: e.clientY };
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging || !currentPartMesh) return;
+                const deltaX = e.clientX - previousMousePosition.x;
+                const deltaY = e.clientY - previousMousePosition.y;
+
+                currentPartMesh.rotation.y += deltaX * 0.01;
+                currentPartMesh.rotation.x += deltaY * 0.01;
+
+                previousMousePosition = { x: e.clientX, y: e.clientY };
+            });
+
+            window.addEventListener('mouseup', () => { isDragging = false; });
+
+            // Touch events for mobile
+            container.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            });
+
+            window.addEventListener('touchmove', (e) => {
+                if (!isDragging || !currentPartMesh) return;
+                const deltaX = e.touches[0].clientX - previousMousePosition.x;
+                const deltaY = e.touches[0].clientY - previousMousePosition.y;
+
+                currentPartMesh.rotation.y += deltaX * 0.01;
+                currentPartMesh.rotation.x += deltaY * 0.01;
+
+                previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            });
+
+            window.addEventListener('touchend', () => { isDragging = false; });
+
+            // Window resize handler
+            window.addEventListener('resize', () => {
+                if (!container) return;
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+
+            animateThree();
+        }
+
+        function loadPartMesh(productId) {
+            const data = productData[productId];
+            if (!data) return;
+
+            if (currentPartMesh) {
+                scene.remove(currentPartMesh);
+            }
+
+            let geometry;
+            if (data.meshType === 'cylinder') {
+                geometry = new THREE.CylinderGeometry(1.2, 1.2, 2.5, 32);
+            } else if (data.meshType === 'torus') {
+                geometry = new THREE.TorusGeometry(1.3, 0.4, 24, 48);
+            } else if (data.meshType === 'box') {
+                geometry = new THREE.BoxGeometry(2.2, 1.2, 1.8);
             } else {
-                summaryText += "Optimal match for CCPL's CNC turning fleet & Mitutoyo first-piece inspection workflow.";
+                geometry = new THREE.CylinderGeometry(1.4, 1.4, 1.8, 32);
             }
-            document.getElementById('outSummary').innerHTML = summaryText;
+
+            const material = new THREE.MeshStandardMaterial({
+                color: data.color,
+                metalness: 0.85,
+                roughness: 0.25,
+                wireframe: false
+            });
+
+            currentPartMesh = new THREE.Mesh(geometry, material);
+            scene.add(currentPartMesh);
+
+            // Update DOM specs
+            document.getElementById('3d-part-title').textContent = data.title;
+            document.getElementById('spec-material').textContent = data.material;
+            document.getElementById('spec-tolerance').textContent = data.tolerance;
+            document.getElementById('spec-process').textContent = data.process;
+            document.getElementById('spec-capacity').textContent = data.capacity;
         }
 
-        // Handle RFQ Form Submit
-        function handleFormSubmit(event) {
-            event.preventDefault();
-            const formStatus = document.getElementById('formStatus');
-            formStatus.classList.remove('hidden');
-            document.getElementById('contactForm').reset();
-            setTimeout(() => {
-                formStatus.classList.add('hidden');
-            }, 6000);
+        function selectProduct(productId) {
+            // Update active button styles
+            const buttons = ['starter_casing', 'suspension_bush', 'sg_sump', 'v_pulley'];
+            buttons.forEach(id => {
+                const btn = document.getElementById('prod-btn-' + id);
+                if (id === productId) {
+                    btn.className = "prod-btn w-full text-left p-5 rounded-xl bg-white dark:bg-slate-900 border border-brand-600 border-l-4 border-l-brand-600 bg-brand-50/50 dark:bg-brand-950/20 shadow-sm transition-all";
+                } else {
+                    btn.className = "prod-btn w-full text-left p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-brand-500 shadow-sm transition-all";
+                }
+            });
+
+            loadPartMesh(productId);
         }
+
+        function animateThree() {
+            requestAnimationFrame(animateThree);
+            if (currentPartMesh && !isDragging) {
+                currentPartMesh.rotation.y += 0.005;
+            }
+            if (renderer && scene && camera) {
+                renderer.render(scene, camera);
+            }
+        }
+
+        window.onload = function() {
+            initThreeViewer();
+            updateRFQState();
+        };
     </script>
 </body>
 </html>
